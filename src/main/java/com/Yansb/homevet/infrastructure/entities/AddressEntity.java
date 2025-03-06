@@ -1,5 +1,6 @@
 package com.Yansb.homevet.infrastructure.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -39,6 +40,7 @@ public class AddressEntity {
     @Column(nullable = false)
     private String complement;
 
+    @JsonIgnore
     @ManyToOne
     private UserEntity user;
 

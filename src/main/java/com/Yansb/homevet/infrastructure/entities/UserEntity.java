@@ -13,7 +13,6 @@ import org.hibernate.annotations.Parameter;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 
 @Entity
@@ -24,7 +23,7 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity {
   @Id
-  private UUID id;
+  private String id;
 
   @Column(nullable = false)
   private String name;
@@ -34,9 +33,6 @@ public class UserEntity {
 
   @Column(columnDefinition = "phone_number")
   private String phoneNumber;
-
-  @Column(columnDefinition = "firebase_id")
-  private String firebaseId;
 
   @Column()
   private String CRV;

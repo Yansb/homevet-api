@@ -26,7 +26,7 @@ public class UserService {
         this.firebaseService = firebaseService;
     }
 
-    public UUID CreateUser(CreateUserRequest createUserRequest) {
+    public String CreateUser(CreateUserRequest createUserRequest) {
         try {
             final var firebaseUser = firebaseService.createUser(createUserRequest);
             var userEntity = mapToUserEntity(createUserRequest, firebaseUser.getUid());
@@ -41,13 +41,11 @@ public class UserService {
 
 
     private UserEntity mapToUserEntity(CreateUserRequest createUserRequest, String firebaseId) {
-        final var userId = UUID.randomUUID();
         return UserEntity.builder()
-                .id(userId)
+                .id(firebaseId)
                 .name(createUserRequest.firstName() + " " + createUserRequest.lastName())
                 .email(createUserRequest.email())
                 .phoneNumber(createUserRequest.phoneNumber())
-                .firebaseId(firebaseId)
                 .roles(List.of(UserRole.USER))
                 .address(Set.of(
                         AddressEntity.builder()
@@ -60,7 +58,7 @@ public class UserService {
                                 .addressName(createUserRequest.address().addressName())
                                 .complement(createUserRequest.address().complement())
                                 .mainAddressAt(Instant.now())
-                                .user(UserEntity.builder().id(userId).build())
+                                .user(UserEntity.builder().id(firebaseId).build())
                                 .build()))
                 .build();
     }
