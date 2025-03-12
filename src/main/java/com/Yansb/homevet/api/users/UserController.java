@@ -4,10 +4,8 @@ import com.Yansb.homevet.api.users.request.CreateUserRequest;
 import com.Yansb.homevet.api.users.response.CreateUserResponse;
 import com.Yansb.homevet.application.services.UserService;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
-import com.Yansb.homevet.infrastructure.firebase.FirebaseAuthenticationToken;
 import com.Yansb.homevet.infrastructure.repositories.UserRepository;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.remoteconfig.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) {
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) throws FirebaseAuthException {
         var userId = userService.CreateUser(request);
 
         return ResponseEntity

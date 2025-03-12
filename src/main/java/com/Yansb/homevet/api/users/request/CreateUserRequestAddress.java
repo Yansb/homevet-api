@@ -9,5 +9,6 @@ public record CreateUserRequestAddress(
     @NotBlank String zipCode,
     @NotBlank String addressName,
     @NotBlank String number,
-    String complement
+    String complement,
+    CreateUserRequestAddressLocation location
 ) {}

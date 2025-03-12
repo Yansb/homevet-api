@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.locationtech.jts.geom.Point;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -39,6 +40,9 @@ public class AddressEntity {
 
     @Column(nullable = false)
     private String complement;
+
+    @Column(columnDefinition = "geometry(Point, 4326)")
+    private Point location;
 
     @JsonIgnore
     @ManyToOne

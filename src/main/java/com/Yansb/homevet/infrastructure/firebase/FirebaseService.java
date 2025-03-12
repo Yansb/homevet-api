@@ -6,14 +6,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -48,5 +46,9 @@ public class FirebaseService {
     newClaims.put("authorities", rolesNew);
 
     FirebaseAuth.getInstance().setCustomUserClaims(uid, newClaims);
+  }
+
+  public void deleteUser(String uid) throws FirebaseAuthException {
+    FirebaseAuth.getInstance().deleteUser(uid);
   }
 }

@@ -34,12 +34,6 @@ public class UserEntity {
   @Column(columnDefinition = "phone_number")
   private String phoneNumber;
 
-  @Column()
-  private String CRV;
-
-  @Column(columnDefinition = "drivers_license")
-  private String driversLicense;
-
   @Type(
       value = ListArrayType.class,
       parameters = {
