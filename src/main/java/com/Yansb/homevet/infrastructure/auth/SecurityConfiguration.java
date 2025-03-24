@@ -34,6 +34,7 @@ public class SecurityConfiguration {
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authorizeRequests -> authorizeRequests
             .requestMatchers(HttpMethod.POST, "/user").permitAll()
+            .requestMatchers(HttpMethod.POST, "/doctor").permitAll()
             .requestMatchers(HttpMethod.GET, "/", "/location/{cep}").permitAll()
             .anyRequest().authenticated())
         .oauth2ResourceServer(oauth -> oauth.jwt(

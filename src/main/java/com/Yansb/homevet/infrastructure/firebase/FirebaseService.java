@@ -1,7 +1,9 @@
 package com.Yansb.homevet.infrastructure.firebase;
 
+import com.Yansb.homevet.api.doctors.request.CreateDoctorRequest;
 import com.Yansb.homevet.api.users.request.CreateUserRequest;
 import com.Yansb.homevet.infrastructure.entities.UserRole;
+import com.google.cloud.storage.Acl.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
@@ -29,6 +31,22 @@ public class FirebaseService {
     final var createdUser = FirebaseAuth.getInstance().createUser(request);
 
     assignRole(createdUser.getUid(), Set.of(UserRole.USER.name()));
+
+    return createdUser;
+  }
+
+  public UserRecord createDoctor(CreateDoctorRequest createDoctorRequest) throws FirebaseAuthException {
+    final var displayName = createDoctorRequest.firstName() + " " + createDoctorRequest.lastName();
+
+    UserRecord.CreateRequest request = new UserRecord.CreateRequest()
+        .setEmail(createDoctorRequest.email())
+        .setDisplayName(displayName)
+        .setPassword(createDoctorRequest.password())
+        .setPhoneNumber(createDoctorRequest.phoneNumber());
+
+    final var createdUser = FirebaseAuth.getInstance().createUser(request);
+
+    assignRole(createdUser.getUid(), Set.of(UserRole.USER.name(), UserRole.VETERINARIAN.name()));
 
     return createdUser;
   }

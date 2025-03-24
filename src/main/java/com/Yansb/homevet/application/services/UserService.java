@@ -24,7 +24,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final FirebaseService firebaseService;
 
-    public UserService(UserRepository userRepository, FirebaseService firebaseService){
+    public UserService(UserRepository userRepository, FirebaseService firebaseService) {
         this.userRepository = userRepository;
         this.firebaseService = firebaseService;
     }
@@ -39,7 +39,7 @@ public class UserService {
 
             return userEntity.getId();
         } catch (Exception e) {
-            if (firebaseUser != null){
+            if (firebaseUser != null) {
                 firebaseService.deleteUser(firebaseUser.getUid());
             }
 
@@ -47,11 +47,11 @@ public class UserService {
         }
     }
 
-
     private UserEntity mapToUserEntity(CreateUserRequest createUserRequest, String firebaseId) {
         var point = createUserRequest.address().location() != null
-          ? new GeometryFactory().createPoint(new Coordinate(createUserRequest.address().location().latitude(), createUserRequest.address().location().longitude()))
-          : null;
+                ? new GeometryFactory().createPoint(new Coordinate(createUserRequest.address().location().latitude(),
+                        createUserRequest.address().location().longitude()))
+                : null;
 
         return UserEntity.builder()
                 .id(firebaseId)

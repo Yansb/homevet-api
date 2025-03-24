@@ -15,6 +15,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/user")
@@ -36,7 +38,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request) throws FirebaseAuthException {
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest request)
+            throws FirebaseAuthException {
         var userId = userService.CreateUser(request);
 
         return ResponseEntity

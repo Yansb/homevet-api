@@ -33,6 +33,7 @@ dependencies {
 	implementation 'org.flywaydb:flyway-database-postgresql'
 	implementation 'com.google.firebase:firebase-admin:9.4.3'
 	implementation 'jakarta.validation:jakarta.validation-api:3.1.1'
+	implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
 	implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.9.2'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.hibernate.orm:hibernate-spatial:6.6.10.Final'

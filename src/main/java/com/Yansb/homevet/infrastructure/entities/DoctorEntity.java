@@ -27,7 +27,7 @@ public class DoctorEntity {
   private String license_number;
 
   @Column()
-  private String service_radius;
+  private Integer service_radius;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "attending_address_id", referencedColumnName = "id")
@@ -38,13 +38,8 @@ public class DoctorEntity {
   private UserEntity user;
 
   @ManyToMany
-  @JoinTable(
-      name = "doctor_specialities",
-      joinColumns = @JoinColumn(name = "doctor_id"),
-      inverseJoinColumns = @JoinColumn(name = "speciality_id")
-  )
+  @JoinTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
   private List<SpecialityEntity> specialities;
-
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
