@@ -1,7 +1,6 @@
 package com.Yansb.homevet.infrastructure.firebase;
 
 import com.google.firebase.auth.FirebaseToken;
-import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -18,7 +17,7 @@ public class FirebaseAuthenticationToken extends AbstractAuthenticationToken {
   }
 
   public FirebaseAuthenticationToken(
-    String idToken, FirebaseToken firebaseToken, List<GrantedAuthority> authorities) {
+      String idToken, FirebaseToken firebaseToken, List<GrantedAuthority> authorities) {
     super(authorities);
     this.idToken = idToken;
     this.firebaseToken = firebaseToken;
