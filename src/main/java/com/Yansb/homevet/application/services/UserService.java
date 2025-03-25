@@ -49,8 +49,8 @@ public class UserService {
 
     private UserEntity mapToUserEntity(CreateUserRequest createUserRequest, String firebaseId) {
         var point = createUserRequest.address().location() != null
-                ? new GeometryFactory().createPoint(new Coordinate(createUserRequest.address().location().latitude(),
-                        createUserRequest.address().location().longitude()))
+                ? new GeometryFactory().createPoint(new Coordinate(createUserRequest.address().location().longitude(),
+                        createUserRequest.address().location().latitude()))
                 : null;
 
         return UserEntity.builder()

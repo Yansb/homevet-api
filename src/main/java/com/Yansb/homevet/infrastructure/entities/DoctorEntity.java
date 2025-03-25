@@ -38,8 +38,8 @@ public class DoctorEntity {
   private UserEntity user;
 
   @ManyToMany
-  @JoinTable(name = "doctor_specialities", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
-  private List<SpecialityEntity> specialities;
+  @JoinTable(name = "doctor_specialties", joinColumns = @JoinColumn(name = "doctor_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
+  private List<SpecialtyEntity> specialties;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)
@@ -50,4 +50,8 @@ public class DoctorEntity {
   @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "updated_at")
   private Instant updatedAt;
+
+  public void addSpecialty(SpecialtyEntity specialtyEntity) {
+    this.specialties.add(specialtyEntity);
+  }
 }

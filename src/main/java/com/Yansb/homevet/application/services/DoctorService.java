@@ -10,26 +10,35 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.Yansb.homevet.api.doctors.request.AddDoctorSpecialtyRequest;
 import com.Yansb.homevet.api.doctors.request.CreateDoctorRequest;
 import com.Yansb.homevet.api.exceptions.CreateUserException;
+import com.Yansb.homevet.api.exceptions.NotFound.SpecialtyNotFoundException;
+import com.Yansb.homevet.api.exceptions.NotFound.UserNotFoundException;
 import com.Yansb.homevet.infrastructure.entities.AddressEntity;
 import com.Yansb.homevet.infrastructure.entities.DoctorEntity;
+import com.Yansb.homevet.infrastructure.entities.SpecialtyEntity;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
 import com.Yansb.homevet.infrastructure.entities.UserRole;
 import com.Yansb.homevet.infrastructure.firebase.FirebaseService;
 import com.Yansb.homevet.infrastructure.repositories.DoctorRepository;
+import com.Yansb.homevet.infrastructure.repositories.SpecialtiesRepository;
+import com.Yansb.homevet.infrastructure.repositories.UserRepository;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 
 @Service
 public class DoctorService {
   private final DoctorRepository doctorRepository;
+  private final SpecialtiesRepository specialtiesRepository;
+
   private final FirebaseService firebaseService;
 
   public DoctorService(FirebaseService firebaseService,
-      DoctorRepository doctorRepository) {
+      DoctorRepository doctorRepository, SpecialtiesRepository specialtiesRepository) {
     this.firebaseService = firebaseService;
     this.doctorRepository = doctorRepository;
+    this.specialtiesRepository = specialtiesRepository;
   }
 
   @Transactional
@@ -50,10 +59,30 @@ public class DoctorService {
     }
   }
 
+  public String addDoctorSpecialty(UUID specialtyId, String userId) {
+    final var doctor = this.doctorRepository.findByUserId(userId);
+
+    if (doctor == null) {
+      throw new UserNotFoundException("could not find user with userId:" + userId);
+    }
+
+    final var specialty = this.specialtiesRepository.findById(specialtyId);
+
+    if (!specialty.isPresent()) {
+      throw new SpecialtyNotFoundException("could not find specialty with id:" + specialtyId);
+    }
+
+    doctor.addSpecialty(specialty.get());
+
+    doctorRepository.save(doctor);
+
+    return "Doctor updated";
+  }
+
   private DoctorEntity mapToDoctorEntity(CreateDoctorRequest createDoctorRequest, String firebaseId) {
     var point = createDoctorRequest.address().location() != null
-        ? new GeometryFactory().createPoint(new Coordinate(createDoctorRequest.address().location().latitude(),
-            createDoctorRequest.address().location().longitude()))
+        ? new GeometryFactory().createPoint(new Coordinate(createDoctorRequest.address().location().longitude(),
+            createDoctorRequest.address().location().latitude()))
         : null;
 
     var addressEntity = AddressEntity.builder()
@@ -101,7 +130,7 @@ public class DoctorService {
     return DoctorEntity.builder()
         .id(UUID.randomUUID())
         .license_number(createDoctorRequest.licenseNumber())
-        .service_radius(createDoctorRequest.radius())
+        .service_radius(createDoctorRequest.radius() * 1000)
         .user(userEntity)
         .attendingAddress(attendingAddress)
         .build();

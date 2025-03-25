@@ -11,8 +11,7 @@ public class HealthCheckController {
 
   @GetMapping("/")
   public Map<String, Boolean> healthCheck() {
-    Map<String, Boolean> response = new HashMap<>();
-    response.put("health", true);
+    Map<String, Boolean> response = Map.of("health", true);
     return response;
   }
 

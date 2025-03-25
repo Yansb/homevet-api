@@ -17,15 +17,15 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "specialities")
-public class SpecialityEntity {
+@Table(name = "specialties")
+public class SpecialtyEntity {
   @Id
   private UUID id;
 
   @Column()
   private String name;
 
-  @ManyToMany(mappedBy = "specialities")
+  @ManyToMany(mappedBy = "specialties")
   private List<DoctorEntity> doctors;
 
   @CreationTimestamp

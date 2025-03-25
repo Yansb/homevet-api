@@ -6,6 +6,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.Yansb.homevet.api.exceptions.NotFound.NotFoundException;
+import com.Yansb.homevet.api.exceptions.NotFound.UserNotFoundException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +20,13 @@ public class GlobalExceptionHandler {
     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
         .body(
             ErrorResponse.builder().status(HttpStatus.BAD_REQUEST.value()).message(ex.getMessage()).build());
+  }
+
+  @ExceptionHandler(NotFoundException.class)
+  public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException ex) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND)
+        .body(
+            ErrorResponse.builder().status(HttpStatus.NOT_FOUND.value()).message(ex.getMessage()).build());
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
