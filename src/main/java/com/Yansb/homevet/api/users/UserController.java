@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/user")
@@ -45,5 +47,11 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new CreateUserResponse(userId));
+    }
+
+    @PutMapping("upload-image")
+    public String putMethodName(@RequestBody String entity) {
+
+        return entity;
     }
 }

@@ -10,14 +10,5 @@ public record NearbyDoctorResponse(
     String name,
     String email,
     String phoneNumber,
-    NearbyDoctorResponseAddress address,
     List<String> specialties) {
-  public record NearbyDoctorResponseAddress(
-      String street,
-      String city,
-      String state,
-      String zipCode,
-      String addressName,
-      String complement) {
-  }
 }

@@ -1,7 +1,9 @@
 package com.Yansb.homevet.application.services;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -24,6 +26,7 @@ import com.Yansb.homevet.infrastructure.firebase.FirebaseService;
 import com.Yansb.homevet.infrastructure.repositories.DoctorRepository;
 import com.Yansb.homevet.infrastructure.repositories.SpecialtiesRepository;
 import com.Yansb.homevet.infrastructure.repositories.UserRepository;
+import com.google.api.client.util.ArrayMap;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 

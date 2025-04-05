@@ -37,6 +37,10 @@ dependencies {
 	implementation 'io.hypersistence:hypersistence-utils-hibernate-63:3.9.2'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.hibernate.orm:hibernate-spatial:6.6.10.Final'
+
+	implementation platform("software.amazon.awssdk:bom:2.31.7")
+	implementation "software.amazon.awssdk:s3"
+
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
