@@ -10,9 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import com.Yansb.homevet.infrastructure.serializers.ProfilePictureSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import org.hibernate.annotations.Parameter;
 import java.time.Instant;
@@ -25,6 +23,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Table(name = "users")
+@NamedEntityGraph(name = "User.minimal", attributeNodes = {
+        @NamedAttributeNode("profilePicture")
+})
 public class UserEntity {
     @Id
     private String id;
@@ -40,7 +41,7 @@ public class UserEntity {
 
     @OneToOne
     @JoinColumn(name = "profile_picture_id", referencedColumnName = "id")
-    @JsonSerialize(using = ProfilePictureSerializer.class)
+    @JsonIgnore
     private FileEntity profilePicture;
 
     @Type(value = ListArrayType.class, parameters = {
@@ -50,11 +51,10 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private List<UserRole> roles;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<AddressEntity> address;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Collection<FileEntity> files;
 
     @CreationTimestamp

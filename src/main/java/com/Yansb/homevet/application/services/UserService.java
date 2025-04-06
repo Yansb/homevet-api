@@ -1,6 +1,7 @@
 package com.Yansb.homevet.application.services;
 
 import com.Yansb.homevet.api.users.request.CreateUserRequest;
+import com.Yansb.homevet.api.users.response.GetLoggedUserResponse;
 import com.Yansb.homevet.application.dtos.CreateSignedUrlOutput;
 import com.Yansb.homevet.api.exceptions.CreateUserException;
 import com.Yansb.homevet.infrastructure.entities.AddressEntity;
@@ -41,7 +42,12 @@ public class UserService {
         this.fileRepository = fileRepository;
     }
 
-    public String CreateUser(CreateUserRequest createUserRequest) throws FirebaseAuthException {
+    public GetLoggedUserResponse getLoggedUser(String id) {
+        var userEntity = this.userRepository.findById(id).orElseThrow();
+        return GetLoggedUserResponse.fromEntity(userEntity);
+    }
+
+    public String createUser(CreateUserRequest createUserRequest) throws FirebaseAuthException {
         UserRecord firebaseUser = null;
         try {
             firebaseUser = firebaseService.createUser(createUserRequest);

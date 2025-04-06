@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.Yansb.homevet.api.location.response.NearbyDoctorResponse;
 import com.Yansb.homevet.infrastructure.entities.DoctorEntity;
+import com.Yansb.homevet.infrastructure.entities.SpecialtyEntity;
 import com.Yansb.homevet.infrastructure.repositories.DoctorRepository;
 
 @Service
@@ -29,7 +30,7 @@ public class LocationService {
     var user = doctor.getUser();
     var specialties = doctor.getSpecialties() != null
         ? doctor.getSpecialties().stream()
-            .map(specialty -> specialty.getName())
+            .map(SpecialtyEntity::getName)
             .collect(Collectors.toList())
         : List.<String>of();
 
@@ -40,6 +41,7 @@ public class LocationService {
         user.getName(),
         user.getEmail(),
         user.getPhoneNumber(),
+        user.getProfilePicture(),
         specialties);
   }
 }
