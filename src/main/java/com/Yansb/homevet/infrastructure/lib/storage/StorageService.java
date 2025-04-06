@@ -25,15 +25,9 @@ public class StorageService {
   private String region;
 
   public String createPresignedUrl(String keyName) {
-    Map<String, String> metadata = Map.of(
-        "Access-Control-Allow-Origin", "*",
-        "Access-Control-Allow-Methods", "GET,PUT,POST,DELETE",
-        "Access-Control-Allow-Headers", "*");
-
     PutObjectRequest objectRequest = PutObjectRequest.builder()
         .bucket(bucketName)
         .key(keyName)
-        .metadata(metadata)
         .build();
 
     PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
