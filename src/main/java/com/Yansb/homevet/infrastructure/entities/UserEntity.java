@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -22,41 +21,35 @@ import java.util.List;
 @Builder
 @Table(name = "users")
 public class UserEntity {
-  @Id
-  private String id;
+    @Id
+    private String id;
 
-  @Column(nullable = false)
-  private String name;
+    @Column(nullable = false)
+    private String name;
 
-  @Column(nullable = false)
-  private String email;
+    @Column(nullable = false)
+    private String email;
 
-  @Column(columnDefinition = "phone_number")
-  private String phoneNumber;
+    @Column(columnDefinition = "phone_number")
+    private String phoneNumber;
 
-  @Type(
-      value = ListArrayType.class,
-      parameters = {
-          @Parameter(
-              name = ListArrayType.SQL_ARRAY_TYPE,
-              value = "user_role"
-          )
-      }
-  )
-  @Column(columnDefinition = "user_role[]")
-  @Enumerated(EnumType.STRING)
-  private List<UserRole> roles;
+    @Type(value = ListArrayType.class, parameters = {
+            @Parameter(name = ListArrayType.SQL_ARRAY_TYPE, value = "user_role")
+    })
+    @Column(columnDefinition = "user_role[]")
+    @Enumerated(EnumType.STRING)
+    private List<UserRole> roles;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Collection<AddressEntity> address;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Collection<AddressEntity> address;
 
-  @CreationTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "created_at", nullable = false, updatable = false)
-  private Instant createdAt;
+    @CreationTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private Instant createdAt;
 
-  @UpdateTimestamp
-  @Temporal(TemporalType.TIMESTAMP)
-  @Column(name = "updated_at")
-  private Instant updatedAt;
+    @UpdateTimestamp
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_at")
+    private Instant updatedAt;
 }

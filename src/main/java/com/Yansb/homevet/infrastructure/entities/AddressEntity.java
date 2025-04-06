@@ -1,6 +1,9 @@
 package com.Yansb.homevet.infrastructure.entities;
 
+import com.Yansb.homevet.infrastructure.serializers.PointSerializer;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -35,13 +38,14 @@ public class AddressEntity {
     @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false,columnDefinition = "address_name")
+    @Column(nullable = false, columnDefinition = "address_name")
     private String addressName;
 
     @Column(nullable = false)
     private String complement;
 
     @Column(columnDefinition = "geometry(Point, 4326)")
+    @JsonSerialize(using = PointSerializer.class)
     private Point location;
 
     @JsonIgnore
