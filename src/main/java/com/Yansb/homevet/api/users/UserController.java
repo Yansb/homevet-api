@@ -1,9 +1,12 @@
 package com.Yansb.homevet.api.users;
 
 import com.Yansb.homevet.api.users.request.CreateUserRequest;
+import com.Yansb.homevet.api.users.request.UploadImageRequest;
 import com.Yansb.homevet.api.users.response.CreateUserResponse;
+import com.Yansb.homevet.application.dtos.CreateSignedUrlOutput;
 import com.Yansb.homevet.application.services.UserService;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
+import com.Yansb.homevet.infrastructure.lib.storage.StorageService;
 import com.Yansb.homevet.infrastructure.repositories.UserRepository;
 import com.google.firebase.auth.FirebaseAuthException;
 import jakarta.validation.Valid;
@@ -15,9 +18,9 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 @RequestMapping("/user")
@@ -25,7 +28,7 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
-    public UserController(UserRepository userRepository, UserService userService) {
+    public UserController(UserRepository userRepository, UserService userService, StorageService storageService) {
         this.userRepository = userRepository;
         this.userService = userService;
     }
@@ -48,9 +51,17 @@ public class UserController {
                 .body(new CreateUserResponse(userId));
     }
 
-    @PutMapping("upload-image")
-    public String putMethodName(@RequestBody String entity) {
+    @PostMapping("upload-image")
+    public CreateSignedUrlOutput putMethodName(@RequestBody UploadImageRequest request,
+            @AuthenticationPrincipal Jwt user) {
 
-        return entity;
+        return this.userService.createUrlToUploadProfilePicture(request.fileName(), request.fileType(),
+                user.getSubject());
+    }
+
+    @PutMapping("confirm-profile/{key}")
+    public void confirmProfilePicUpload(@PathVariable("key") String key) {
+
+        this.userService.confirmProfilePicUpload(key);
     }
 }

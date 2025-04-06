@@ -7,6 +7,7 @@ import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3AsyncClient;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 
 @Configuration
 public class S3Configuration {
@@ -26,6 +27,16 @@ public class S3Configuration {
     return S3AsyncClient.builder()
         .credentialsProvider(StaticCredentialsProvider.create(credentials))
         .region(Region.of(region))
+        .build();
+  }
+
+  @Bean
+  public S3Presigner presigner() {
+    final var credentials = AwsBasicCredentials.builder().accessKeyId(accessKey).secretAccessKey(secretKey).build();
+
+    return S3Presigner.builder()
+        .region(Region.of(region))
+        .credentialsProvider(StaticCredentialsProvider.create(credentials))
         .build();
   }
 }

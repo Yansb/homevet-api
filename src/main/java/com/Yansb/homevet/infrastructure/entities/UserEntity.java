@@ -9,6 +9,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.Yansb.homevet.infrastructure.serializers.ProfilePictureSerializer;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import org.hibernate.annotations.Parameter;
 import java.time.Instant;
 import java.util.Collection;
@@ -33,6 +38,11 @@ public class UserEntity {
     @Column(columnDefinition = "phone_number")
     private String phoneNumber;
 
+    @OneToOne
+    @JoinColumn(name = "profile_picture_id", referencedColumnName = "id")
+    @JsonSerialize(using = ProfilePictureSerializer.class)
+    private FileEntity profilePicture;
+
     @Type(value = ListArrayType.class, parameters = {
             @Parameter(name = ListArrayType.SQL_ARRAY_TYPE, value = "user_role")
     })
@@ -42,6 +52,10 @@ public class UserEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Collection<AddressEntity> address;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Collection<FileEntity> files;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)

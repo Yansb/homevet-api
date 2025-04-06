@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.time.Instant;
 
 @Entity
@@ -24,10 +26,18 @@ public class FileEntity {
   private String name;
 
   @Column()
-  private String type;
+  private String file_type;
 
   @Column()
-  private String file_type;
+  private String link;
+
+  @JsonIgnore
+  @ManyToOne
+  private UserEntity user;
+
+  @Column(name = "uploaded_at")
+  @Temporal(TemporalType.TIMESTAMP)
+  private Instant uploadedAt;
 
   @CreationTimestamp
   @Temporal(TemporalType.TIMESTAMP)

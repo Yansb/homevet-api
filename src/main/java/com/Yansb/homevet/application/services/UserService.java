@@ -1,14 +1,21 @@
 package com.Yansb.homevet.application.services;
 
 import com.Yansb.homevet.api.users.request.CreateUserRequest;
+import com.Yansb.homevet.application.dtos.CreateSignedUrlOutput;
 import com.Yansb.homevet.api.exceptions.CreateUserException;
 import com.Yansb.homevet.infrastructure.entities.AddressEntity;
+import com.Yansb.homevet.infrastructure.entities.FileEntity;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
 import com.Yansb.homevet.infrastructure.entities.UserRole;
 import com.Yansb.homevet.infrastructure.firebase.FirebaseService;
+import com.Yansb.homevet.infrastructure.lib.storage.StorageService;
+import com.Yansb.homevet.infrastructure.repositories.FileRepository;
 import com.Yansb.homevet.infrastructure.repositories.UserRepository;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
+
+import jakarta.transaction.Transactional;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.stereotype.Service;
@@ -22,11 +29,16 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FileRepository fileRepository;
     private final FirebaseService firebaseService;
+    private final StorageService storageService;
 
-    public UserService(UserRepository userRepository, FirebaseService firebaseService) {
+    public UserService(UserRepository userRepository, FirebaseService firebaseService, StorageService storageService,
+            FileRepository fileRepository) {
         this.userRepository = userRepository;
         this.firebaseService = firebaseService;
+        this.storageService = storageService;
+        this.fileRepository = fileRepository;
     }
 
     public String CreateUser(CreateUserRequest createUserRequest) throws FirebaseAuthException {
@@ -45,6 +57,33 @@ public class UserService {
 
             throw new CreateUserException(e.getMessage());
         }
+    }
+
+    public CreateSignedUrlOutput createUrlToUploadProfilePicture(String fileName, String fileType, String userId) {
+        var key = fileName + Instant.now().toEpochMilli();
+        var presignedUrl = storageService.createPresignedUrl(key);
+        var fileEntity = FileEntity.builder()
+                .id(key)
+                .name(fileName)
+                .file_type(fileType)
+                .link(presignedUrl)
+                .user(UserEntity.builder().id(userId).build())
+                .build();
+        this.fileRepository.save(fileEntity);
+
+        return new CreateSignedUrlOutput(presignedUrl, key);
+    }
+
+    @Transactional
+    public void confirmProfilePicUpload(String key) {
+        var fileEntity = this.fileRepository.findById(key).orElseThrow();
+        fileEntity.setUploadedAt(Instant.now());
+        var userEntity = fileEntity.getUser();
+        userEntity.setProfilePicture(fileEntity);
+
+        fileRepository.save(fileEntity);
+        userRepository.save(userEntity);
+
     }
 
     private UserEntity mapToUserEntity(CreateUserRequest createUserRequest, String firebaseId) {

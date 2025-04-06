@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import software.amazon.awssdk.services.s3.S3AsyncClient;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
@@ -17,29 +16,37 @@ import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignReques
 public class StorageService {
 
   @Autowired
-  S3AsyncClient s3AsyncClient;
+  private S3Presigner presigner;
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucketName;
 
-  public String createPresignedUrl(String bucketName, String keyName, Map<String, String> metadata) {
-    try (S3Presigner presigner = S3Presigner.create()) {
+  @Value("${cloud.aws.region.static}")
+  private String region;
 
-      PutObjectRequest objectRequest = PutObjectRequest.builder()
-          .bucket(bucketName)
-          .key(keyName)
-          .metadata(metadata)
-          .build();
+  public String createPresignedUrl(String keyName) {
 
-      PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-          .signatureDuration(Duration.ofMinutes(10))
-          .putObjectRequest(objectRequest)
-          .build();
+    PutObjectRequest objectRequest = PutObjectRequest.builder()
+        .bucket(bucketName)
+        .key(keyName)
+        .build();
 
-      PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
-      String myURL = presignedRequest.url().toString();
+    PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+        .signatureDuration(Duration.ofMinutes(10))
+        .putObjectRequest(objectRequest)
+        .build();
 
-      return presignedRequest.url().toExternalForm();
-    }
+    PresignedPutObjectRequest presignedRequest = presigner.presignPutObject(presignRequest);
+    return presignedRequest.url().toExternalForm();
+  }
+
+  public String getPresignedUrl(String keyName) {
+    return presigner.presignGetObject(presignRequest -> presignRequest
+        .signatureDuration(Duration.ofMinutes(10))
+        .getObjectRequest(getObjectRequest -> getObjectRequest
+            .bucket(bucketName)
+            .key(keyName)))
+        .url()
+        .toExternalForm();
   }
 }
