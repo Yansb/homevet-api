@@ -7,7 +7,7 @@ import com.Yansb.homevet.api.exceptions.CreateUserException;
 import com.Yansb.homevet.infrastructure.entities.AddressEntity;
 import com.Yansb.homevet.infrastructure.entities.FileEntity;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
-import com.Yansb.homevet.infrastructure.entities.UserRole;
+import com.Yansb.homevet.infrastructure.entities.enums.UserRole;
 import com.Yansb.homevet.infrastructure.firebase.FirebaseService;
 import com.Yansb.homevet.infrastructure.lib.storage.StorageService;
 import com.Yansb.homevet.infrastructure.repositories.FileRepository;

@@ -1,6 +1,6 @@
 package com.Yansb.homevet.infrastructure.firebase;
 
-import com.Yansb.homevet.infrastructure.entities.UserRole;
+import com.Yansb.homevet.infrastructure.entities.enums.UserRole;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseToken;
 import jakarta.servlet.FilterChain;

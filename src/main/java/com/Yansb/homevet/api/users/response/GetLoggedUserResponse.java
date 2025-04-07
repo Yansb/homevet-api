@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.Yansb.homevet.infrastructure.entities.FileEntity;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
-import com.Yansb.homevet.infrastructure.entities.UserRole;
+import com.Yansb.homevet.infrastructure.entities.enums.UserRole;
 import com.Yansb.homevet.infrastructure.serializers.ProfilePictureSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 

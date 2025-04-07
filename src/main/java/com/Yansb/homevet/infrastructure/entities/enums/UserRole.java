@@ -1,4 +1,4 @@
-package com.Yansb.homevet.infrastructure.entities;
+package com.Yansb.homevet.infrastructure.entities.enums;
 
 public enum UserRole {
     ADMIN,

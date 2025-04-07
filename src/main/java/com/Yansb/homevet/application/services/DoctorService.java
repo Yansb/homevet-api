@@ -1,9 +1,7 @@
 package com.Yansb.homevet.application.services;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -12,21 +10,17 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.Yansb.homevet.api.doctors.request.AddDoctorSpecialtyRequest;
 import com.Yansb.homevet.api.doctors.request.CreateDoctorRequest;
 import com.Yansb.homevet.api.exceptions.CreateUserException;
 import com.Yansb.homevet.api.exceptions.NotFound.SpecialtyNotFoundException;
 import com.Yansb.homevet.api.exceptions.NotFound.UserNotFoundException;
 import com.Yansb.homevet.infrastructure.entities.AddressEntity;
 import com.Yansb.homevet.infrastructure.entities.DoctorEntity;
-import com.Yansb.homevet.infrastructure.entities.SpecialtyEntity;
 import com.Yansb.homevet.infrastructure.entities.UserEntity;
-import com.Yansb.homevet.infrastructure.entities.UserRole;
+import com.Yansb.homevet.infrastructure.entities.enums.UserRole;
 import com.Yansb.homevet.infrastructure.firebase.FirebaseService;
 import com.Yansb.homevet.infrastructure.repositories.DoctorRepository;
 import com.Yansb.homevet.infrastructure.repositories.SpecialtiesRepository;
-import com.Yansb.homevet.infrastructure.repositories.UserRepository;
-import com.google.api.client.util.ArrayMap;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord;
 
